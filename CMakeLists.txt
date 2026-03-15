@@ -13,12 +13,24 @@ FetchContent_Declare(
     GIT_TAG 2.6.1
 )
 
+# Fetch BehaviorTree.CPP
+FetchContent_Declare(
+    BehaviorTreeCPP
+    GIT_REPOSITORY https://github.com/BehaviorTree/BehaviorTree.CPP.git
+    GIT_TAG v4.6.2
+)
+
 set(SFML_BUILD_AUDIO FALSE)
 set(SFML_BUILD_NETWORK FALSE)
 set(SFML_BUILD_DOC FALSE)
 set(SFML_BUILD_EXAMPLES FALSE)
 
-FetchContent_MakeAvailable(SFML)
+# Opções para BehaviorTree.CPP (Desativa o que não é essencial para reduzir tempo de build)
+set(BTCPP_EXAMPLES FALSE CACHE BOOL "" FORCE)
+set(BTCPP_UNIT_TESTS FALSE CACHE BOOL "" FORCE)
+set(BTCPP_SAMPLES FALSE CACHE BOOL "" FORCE)
+
+FetchContent_MakeAvailable(SFML BehaviorTreeCPP)
 
 # Busca arquivos do simulador e solução
 file(GLOB_RECURSE SIMULADOR_SOURCES "simulador/src/*.cpp")
@@ -36,4 +48,9 @@ target_include_directories(SimuladorFutebol PRIVATE
     solucao/include
 )
 
-target_link_libraries(SimuladorFutebol PRIVATE sfml-graphics sfml-window sfml-system)
+target_link_libraries(SimuladorFutebol PRIVATE 
+    sfml-graphics 
+    sfml-window 
+    sfml-system
+    behaviortree_cpp
+)
