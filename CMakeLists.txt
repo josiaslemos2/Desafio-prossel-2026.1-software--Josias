@@ -6,18 +6,21 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 include(FetchContent)
 
-# Fetch SFML
+# Habilita o log de download
+set(FETCHCONTENT_QUIET FALSE)
+
+# Fetch SFML via URL 
 FetchContent_Declare(
     SFML
-    GIT_REPOSITORY https://github.com/SFML/SFML.git
-    GIT_TAG 2.6.1
+    URL https://github.com/SFML/SFML/archive/refs/tags/2.6.1.tar.gz
+    DOWNLOAD_EXTRACT_TIMESTAMP TRUE
 )
 
-# Fetch BehaviorTree.CPP
+# Fetch BehaviorTree.CPP via URL 
 FetchContent_Declare(
     BehaviorTreeCPP
-    GIT_REPOSITORY https://github.com/BehaviorTree/BehaviorTree.CPP.git
-    GIT_TAG v4.6.2
+    URL https://github.com/BehaviorTree/BehaviorTree.CPP/archive/refs/tags/4.8.0.tar.gz
+    DOWNLOAD_EXTRACT_TIMESTAMP TRUE
 )
 
 set(SFML_BUILD_AUDIO FALSE)
@@ -25,7 +28,7 @@ set(SFML_BUILD_NETWORK FALSE)
 set(SFML_BUILD_DOC FALSE)
 set(SFML_BUILD_EXAMPLES FALSE)
 
-# Opções para BehaviorTree.CPP (Desativa o que não é essencial para reduzir tempo de build)
+# Opções para BehaviorTree.CPP
 set(BTCPP_EXAMPLES FALSE CACHE BOOL "" FORCE)
 set(BTCPP_UNIT_TESTS FALSE CACHE BOOL "" FORCE)
 set(BTCPP_SAMPLES FALSE CACHE BOOL "" FORCE)
