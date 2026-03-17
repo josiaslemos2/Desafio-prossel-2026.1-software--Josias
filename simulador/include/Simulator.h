@@ -17,7 +17,7 @@ private:
     void update(float dt);
     void render();
     void handleCollisions();
-    void resetPositions();
+    void resetPositions(bool resetBall = true);
     GameState getGameState(size_t playerIndex, bool teamA);
 
     sf::RenderWindow window;

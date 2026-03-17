@@ -81,9 +81,11 @@ Simulator::Simulator(unsigned int w, unsigned int h)
     resetPositions();
 }
 
-void Simulator::resetPositions() {
-    ball.setPosition(0, 0); 
-    ball.setVelocity(sf::Vector2f(0, 0));
+void Simulator::resetPositions(bool resetBall) {
+    if (resetBall) {
+        ball.setPosition(0, 0); 
+        ball.setVelocity(sf::Vector2f(0, 0));
+    }
     
     if (teamA.size() >= 3) {
         teamA[0]->setPosition(-0.7f, 0);
@@ -115,6 +117,10 @@ void Simulator::processEvents() {
             scoreA = 0; scoreB = 0; gameTime = 0.0f; 
             std::cout << "[RESET] Jogo reiniciado!" << std::endl;
             resetPositions(); 
+        }
+        if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::F) { 
+            std::cout << "[FALTA] Posições dos jogadores resetadas!" << std::endl;
+            resetPositions(false); 
         }
     }
 }

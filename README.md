@@ -124,10 +124,13 @@ O terminal exibe o estado do jogo a 10Hz no formato:
 ---
 
 ## 🛠️ Regras Físicas
-1. **Duração:** As partidas duram 5 minutos (300 segundos).
-2. **Velocidade:** Robôs atingem até `0.5 m/s`.
-3. **Colisões:** Robôs colidem entre si, com a bola e com as paredes. 
-4. **Gols:** Devem ser feitos empurrando a bola fisicamente. Não há comando de chute.
+1.  **Duração:** As partidas duram 5 minutos (300 segundos).
+2.  **Velocidade:** Robôs atingem até `0.5 m/s`.
+3.  **Colisões:** Robôs colidem entre si, com a bola e com as paredes. 
+4.  **Gols:** Devem ser feitos empurrando a bola fisicamente. Não há comando de chute.
+5.  **Comandos de Teclado:**
+    -   **Tecla `F`:** Marca falta. Reseta as posições de todos os jogadores para as posições iniciais de jogo, mas **não** reseta a posição da bola nem o tempo/placar.
+    -   **Tecla `R`:** Reinicia o jogo completo. Reseta as posições dos jogadores, a posição da bola no centro, o placar e o cronômetro.
 
 ---
 
