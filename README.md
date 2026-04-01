@@ -37,7 +37,7 @@ sudo apt-get install cmake g++ libx11-dev libxcursor-dev libxrandr-dev libudev-d
 
 Para uma solução profissional e robusta, espera-se que você implemente duas camadas lógicas principais:
 
-1.  **Tomador de Decisão:** Uma estrutura que determine o que cada robô deve fazer em cada momento (ex: "Ir para a bola", "Ficar na defesa", "Bloquear oponente"). Você pode usar **Máquinas de Estados (FSM)**, **Behavior Trees (BT)** ou lógicas similares.
+1.  **Tomador de Decisão:** Uma estrutura que determine o que cada robô deve fazer em cada momento (ex: "Ir para a bola", "Ficar na defesa", "Bloquear oponente"). Você pode usar **Máquinas de Estados (FSM)**,  ou lógicas similares.
 2.  **Planejador de Caminho (Planner):** Uma lógica que calcule o movimento necessário para atingir o objetivo definido pelo Tomador de Decisão. 
     *   *Dica:* Um bom planejador não apenas vai em linha reta, mas considera o desvio de obstáculos e o posicionamento correto para empurrar a bola.
 
