@@ -1,6 +1,6 @@
 # Desafio de Prossel: Simulador de Futebol 2D (Padrão VSSS)
 
-Bem-vindo ao desafio de programação de robôs! Seu objetivo é implementar a lógica de comportamento de uma equipe de 3 robôs em um simulador que segue as proporções reais da categoria VSSS (Very Small Size Soccer).
+Bem-vindo! Seu objetivo é implementar a lógica de comportamento de uma equipe de 3 robôs em um simulador que segue as proporções reais da categoria VSSS (Very Small Size Soccer).
 
 ---
 
@@ -17,12 +17,7 @@ O ponto de entrada principal é a classe `Estrategia` nos arquivos:
 sudo apt-get install cmake g++ libx11-dev libxcursor-dev libxrandr-dev libudev-dev libgl1-mesa-dev libglu1-mesa-dev
 ```
 
-#### Windows
-1. Instale o **[CMake](https://cmake.org/download/)**.
-2. Instale um compilador C++:
-   - **Opção A (Recomendada):** **[Visual Studio 2022](https://visualstudio.microsoft.com/pt-br/vs/community/)** (Marque a carga de trabalho "Desenvolvimento para desktop com C++").
-   - **Opção B:** **[MinGW-w64](https://www.mingw-w64.org/)** (via MSYS2 ou instalador direto).
-3. O CMake cuidará do download da SFML automaticamente durante a configuração.
+
 
 ### 🛠️ Compilação e Execução
 
@@ -30,19 +25,7 @@ sudo apt-get install cmake g++ libx11-dev libxcursor-dev libxrandr-dev libudev-d
 1. Compile o projeto: `./compilar.sh` (o script configura o CMake e compila automaticamente)
 2. Execute o binário: `./build/SimuladorFutebol`
 
-#### Windows (Via Terminal/PowerShell)
-1. Crie a pasta de build: `mkdir build`
-2. Entre na pasta: `cd build`
-3. Configure o projeto: `cmake ..`
-4. Compile: `cmake --build . --config Release`
-5. Execute o binário: `.\Release\SimuladorFutebol.exe`
 
-#### Windows (Via Visual Studio)
-1. Abra o Visual Studio 2022.
-2. Selecione **"Abrir uma Pasta Local"** e escolha a raiz deste projeto.
-3. O Visual Studio detectará o `CMakeLists.txt` automaticamente.
-4. Clique em **"Compilar" > "Compilar Tudo"**.
-5. Selecione `SimuladorFutebol.exe` no menu de inicialização e aperte **F5**.
 
 3. **Automático:** Assim que a janela abrir, todos os robôs já estarão executando o seu código do método `think()`.
 
