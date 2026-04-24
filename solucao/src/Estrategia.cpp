@@ -105,13 +105,7 @@ Action Estrategia::think(const GameState& state) {
             }
         }
     }
-    else {
-        // atacante secundário
-        float lateral = (id % 2 == 0) ? 0.25f : -0.25f;
-        alvoX = bola.x;
-        alvoY = bola.y + lateral;
-        velocidade = 1.0f;
-    }
+    
     
     if (role == "Ala") {
         if (teamA)
