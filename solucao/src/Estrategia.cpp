@@ -60,16 +60,8 @@ Action Estrategia::think(const GameState& state) {
     // =============================
     // PRIORIDADE DA BOLA
     // =============================
-    bool estouMaisPerto = true;
+    
     float minhaDistbola = eu.distTo(bola.x, bola.y);
-
-    for (const auto& mate : state.teammates) {
-        float d = mate.distTo(bola.x, bola.y);
-        if (d < minhaDistbola - 0.01f) {
-            estouMaisPerto = false;
-            break;
-        }
-    }
 
     float alvoX = bola.x;
     float alvoY = bola.y;
@@ -81,9 +73,8 @@ Action Estrategia::think(const GameState& state) {
     if (role == "Atacante") {
 
         float distancia = minhaDistbola;
+        if (teamA) {
 
-        if (estouMaisPerto) {
-            // atacante principal
             if (distancia > 0.10f) {
                 alvoX = bola.x;
                 alvoY = bola.y;
@@ -99,14 +90,28 @@ Action Estrategia::think(const GameState& state) {
             }
         }
         else {
-            // atacante secundário
-            float lateral = (id % 2 == 0) ? 0.25f : -0.25f;
-            alvoX = bola.x;
-            alvoY = bola.y + lateral;
-            velocidade = 1.0f;
+            if (distancia > 0.10f) {
+                alvoX = bola.x;
+                alvoY = bola.y;
+                velocidade = 1.2f;
+            }
+            else {
+                alvoX = golInimigoX;
+                alvoY = 0.0f;
+                velocidade = 1.5f;
+
+                repulsaoX = 0;
+                repulsaoY = 0;
+            }
         }
     }
-
+    else {
+        // atacante secundário
+        float lateral = (id % 2 == 0) ? 0.25f : -0.25f;
+        alvoX = bola.x;
+        alvoY = bola.y + lateral;
+        velocidade = 1.0f;
+    }
     
     if (role == "Ala") {
         if (teamA)
