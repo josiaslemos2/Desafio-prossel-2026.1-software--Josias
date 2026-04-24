@@ -147,7 +147,7 @@ void Simulator::update(float dt) {
     gameTime += dt;
     scoreText.setString("Azul " + std::to_string(scoreA) + " - " + std::to_string(scoreB) + " Vermelho");
     int minutes = (int)gameTime / 60; int seconds = (int)gameTime % 60;
-    char timeStr[64]; sprintf(timeStr, "%02d:%02d", minutes, seconds);
+    char timeStr[64]; sprintf_s(timeStr, "%02d:%02d", minutes, seconds);
     timerText.setString(timeStr);
 
     for (size_t i = 0; i < teamA.size(); ++i) teamA[i]->update(getGameState(i, true), dt);
@@ -191,7 +191,7 @@ void Simulator::handleCollisions() {
     auto checkPlayerPlayer = [&](std::unique_ptr<Player>& p1, std::unique_ptr<Player>& p2) {
         if (p1 == p2) return;
         sf::Vector2f pos1 = p1->getPosition(); sf::Vector2f pos2 = p2->getPosition();
-        float dist = std::sqrt(std::pow(pos1.x - pos2.x, 2) + std::pow(pos1.y - pos2.y, 2));
+        float dist = std::sqrt(((pos1.x - pos2.x)* (pos1.x - pos2.x)) + ((pos1.y - pos2.y)* (pos1.y - pos2.y)));
         float minDist = p1->getRadius() + p2->getRadius();
         if (dist < minDist && dist > 0.0001f) {
             sf::Vector2f pushDir = (pos2 - pos1) / dist;
@@ -221,7 +221,7 @@ void Simulator::handleCollisions() {
     // Colisão Jogador vs Bola
     auto checkPlayerBall = [&](std::unique_ptr<Player>& p) {
         sf::Vector2f pPos = p->getPosition(); sf::Vector2f bPos = ball.getPosition();
-        float dist = std::sqrt(std::pow(pPos.x - bPos.x, 2) + std::pow(pPos.y - bPos.y, 2));
+        float dist = std::sqrt(((pPos.x - bPos.x)* (pPos.x - bPos.x)) + ((pPos.y - bPos.y)* (pPos.y - bPos.y)));
         float minDist = p->getRadius() + ball.getRadius();
         if (dist < minDist) {
             sf::Vector2f pushDir = (bPos - pPos) / dist;

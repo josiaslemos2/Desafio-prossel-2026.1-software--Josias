@@ -16,7 +16,7 @@ struct EntityState {
 
     // Helper: Distância até outra entidade ou ponto
     float distTo(float targetX, float targetY) const {
-        return std::sqrt(std::pow(targetX - x, 2) + std::pow(targetY - y, 2));
+        return std::sqrt(((targetX - x) * (targetX - x)) + ((targetY - y) * (targetY - y)));
     }
 
     // Helper: Ângulo até outra entidade ou ponto (em radianos)

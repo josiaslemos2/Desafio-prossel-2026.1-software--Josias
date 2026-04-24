@@ -16,3 +16,8 @@ lib/
 
 # SFML (se baixar direto no build)
 _deps/
+
+.vs/
+[Bb]in/
+[Oo]bj/
+*.user
