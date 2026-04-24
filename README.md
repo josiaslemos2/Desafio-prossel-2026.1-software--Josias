@@ -13,9 +13,8 @@ utilizando uma zona de movimento restrita por clamping no eixo X e Y.
 Ala: Atua como um robô de suporte defensivo. Seu estado alterna entre manter-se atrás da bola recuando e "ataca" quando a bola está muito próxima do gol.
 
 Atacante: Possui o estado de maior agressividade. Sua lógica transita entre aproximação da bola e condução ao gol adversário, 
-com supressão de forças repulsivas no momento do contato. Par evitar momentos de "equílibrio" (Fr = 0), existem 2 classes de atacante: 
-		- Atacante Principal: Se está mais próximo da bola tem prioridade.
-		- Atacante secundário: Segue a bola mas mantém distância.
+com supressão de forças repulsivas no momento do contato. Par evitar momentos de "equílibrio" (Fr = 0). 
+		
 
 -Planejador de Caminho: O planejador foi implementado através da técnica de Campos Potenciais.
 
@@ -53,7 +52,7 @@ Normalização Vetorial: Toda a movimentação é normalizada (vec{V}|vec{V}).
 Isso garante que, independente da intensidade das forças de desvio, o robô mantenha uma velocidade constante e previsível, 
 facilitando a sincronia da equipe.
 
-Divisão entre os papeis de atacante principal e secundário.
+
 
 
 
