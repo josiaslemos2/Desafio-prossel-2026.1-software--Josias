@@ -16,6 +16,8 @@ private:
     bool teamA;
     std::string role; // "Goleiro", "Ala", "Atacante"
     
+    float lastMoveX = 0.0f;
+    float lastMoveY = 0.0f; // Para evitar tremores
     // Você é livre para criar variáveis, instanciar Máquinas de Estado ou Behavior Trees aqui.
 };
 

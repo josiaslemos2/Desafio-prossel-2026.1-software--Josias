@@ -1,141 +1,113 @@
-# Desafio de Prossel: Simulador de Futebol 2D (Padrão VSSS)
+-Introdução: 
+O sistema de controle desenvolvido  baseia-se em uma arquitetura de Comportamentos Condicionais, semelhante  uma máquina de estados finitos, 
+onde as decisões são tomadas em tempo real com base no estado atual do ambiente (posição da bola, aliados e oponentes). 
 
-Bem-vindo! Seu objetivo é implementar a lógica de comportamento de uma equipe de 3 robôs em um simulador que segue as proporções reais da categoria VSSS (Very Small Size Soccer).
+-Tomador de Decisão: A estrutura de decisão utiliza uma abordagem de Seleção de Comportamento por Funções Fixas, 
+complementada por uma Lógica de Transição de Estado Interna.
 
----
+Estratégia de Papéis:
 
-## 🚀 Como Iniciar
+Goleiro: Foca na interceptação da trajetória da bola dentro da pequena área, 
+utilizando uma zona de movimento restrita por clamping no eixo X e Y.
 
-Toda a sua lógica deve ser implementada dentro da pasta `solucao/`. 
-O ponto de entrada principal é a classe `Estrategia` nos arquivos:
-- `solucao/include/Estrategia.h`
-- `solucao/src/Estrategia.cpp`
-### 📦 Dependências
+Ala: Atua como um robô de suporte defensivo. Seu estado alterna entre manter-se atrás da bola recuando e "ataca" quando a bola está muito próxima do gol.
 
-#### Linux (Ubuntu/Debian)
-```bash
-sudo apt-get install cmake g++ libx11-dev libxcursor-dev libxrandr-dev libudev-dev libgl1-mesa-dev libglu1-mesa-dev
-```
+Atacante: Possui o estado de maior agressividade. Sua lógica transita entre aproximação da bola e condução ao gol adversário, 
+com supressão de forças repulsivas no momento do contato. Par evitar momentos de "equílibrio" (Fr = 0), existem 2 classes de atacante: 
+		- Atacante Principal: Se está mais próximo da bola tem prioridade.
+		- Atacante secundário: Segue a bola mas mantém distância.
+
+-Planejador de Caminho: O planejador foi implementado através da técnica de Campos Potenciais.
+
+Funcionamento Matemático:O movimento resultante do robô é a soma vetorial de duas forças principais:
+
+Força de Atração (vec{F}_{atr}): Um vetor unitário que aponta do robô para o alvo definido pelo Tomador de Decisão.
+
+Força de Repulsão (vec{F}_{rep}): Um campo de força inversamente proporcional à distância entre o robô e os obstáculos (outros robôs).
+
+Algoritmo de Navegação:Para evitar o problema em que a Fr = 0, implementamos um Vetor de Escape Tangencial. 
+Quando a magnitude da força resultante é próxima de zero, adicionamos um vetor perpendicular (pi/2radianos) para permitir que o robô "escorregue" pelo obstáculo.
+
+Quebra de simetria
+Pequeno desvio lateral para evitar decisões idênticas.
+
+Zona morta
+Evita tremor quando o robô já está no alvo.
+
+Suavização (inércia)
+Mistura movimento atual com o anterior para evitar mudanças bruscas
+
+-Justificativa das Escolhas
+
+Usou-se por uma lógica de MSF por ser uma estrutura simples e eficiente para tomada de decisão em tempo real, 
+
+O uso do Campo Potencial permite que o robô recalcule sua trajetória a cada frame de simulação. Isso é ideal para desviar de obstáculos móveis (oponentes), pois o robô não planeja uma rota estática, mas sim "flui" através do campo de forças. 
+
+-Coordenação e Matemática: 
+A cooperação entre os 3 robôs é garantida através de:
+
+Zonas de Influência Geográfica:Distribuição Espacial: Através da função std::clamp, limitamos o Ala e o Goleiro a quadrantes específicos. Isso impede que os três robôs corram para a bola ao mesmo tempo, 
+garantindo a profundidade defensiva.
+
+Normalização Vetorial: Toda a movimentação é normalizada (vec{V}|vec{V}). 
+Isso garante que, independente da intensidade das forças de desvio, o robô mantenha uma velocidade constante e previsível, 
+facilitando a sincronia da equipe.
+
+Divisão entre os papeis de atacante principal e secundário.
 
 
 
-### 🛠️ Compilação e Execução
-
-#### Linux
-1. Compile o projeto: `./compilar.sh` (o script configura o CMake e compila automaticamente)
-2. Execute o binário: `./build/SimuladorFutebol`
 
 
 
-3. **Automático:** Assim que a janela abrir, todos os robôs já estarão executando o seu código do método `think()`.
 
-> **Nota:** Por padrão, tanto o **Time Azul** quanto o **Time Vermelho** utilizam a sua classe `Estrategia`.
-> 
-> **Dica:** Você pode usar a variável **`this->teamA`** (booleana) para diferenciar o comportamento entre os times.
 
-## 🎯 Requisitos da Solução
 
-Para uma solução profissional e robusta, espera-se que você implemente duas camadas lógicas principais:
 
-1.  **Tomador de Decisão:** Uma estrutura que determine o que cada robô deve fazer em cada momento (ex: "Ir para a bola", "Ficar na defesa", "Bloquear oponente"). Você pode usar **Máquinas de Estados (FSM)**,  ou lógicas similares.
-2.  **Planejador de Caminho (Planner):** Uma lógica que calcule o movimento necessário para atingir o objetivo definido pelo Tomador de Decisão. 
-    *   *Dica:* Um bom planejador não apenas vai em linha reta, mas considera o desvio de obstáculos e o posicionamento correto para empurrar a bola.
 
----
 
-## 📐 Unidades e Medidas (Sistema Internacional)
 
-O simulador trabalha exclusivamente com **METROS** e **SEGUNDOS**.
-- **Sistema de Coordenadas:** O centro do campo é o ponto `(0, 0)`.
-- **Limites de X:** de `-0.85` até `+0.85`.
-- **Limites de Y:** de `-0.65` até `+0.65`.
-- **Gols:** Verticalmente entre `y = -0.20` e `y = +0.20`.
 
----
 
-## 🧠 Como Programar
 
-O simulador chama `think(const GameState& state)` para cada robô. Você tem acesso aos seguintes dados:
-- **Seu Robô:** `state.getMe()` (Posição `x, y` e Velocidade `vx, vy`).
-- **A Bola:** `state.ball` (Posição `x, y` e Velocidade `vx, vy`).
-- **Aliados e Inimigos:** Listas `state.teammates` e `state.opponents`.
 
-```cpp
-Action Estrategia::think(const GameState& state) {
-    Action a;
-    const EntityState& eu = state.getMe();
-    const EntityState& bola = state.ball;
 
-    // Exemplo: Como mover para um ponto (Ex: x=0.4, y=0.2)
-    float alvoX = 0.4f;
-    float alvoY = 0.2f;
 
-    float angulo = eu.angleTo(alvoX, alvoY);
-    a.moveDirectionX = std::cos(angulo);
-    a.moveDirectionY = std::sin(angulo);
 
-    // Como saber se chegou no ponto? (Threshold de 5cm)
-    if (eu.distTo(alvoX, alvoY) < 0.05f) {
-        a.moveDirectionX = 0; a.moveDirectionY = 0;
-    }
 
-    return a;
-}
-```
 
----
 
-## 🤝 Coordenando Robôs e Times
 
-Use o `state.myIndex` (0, 1 ou 2) para definir papéis e `this->teamA` para táticas diferentes por time:
 
-```cpp
-if (this->teamA) {
-    // Sou do Time Azul. Meu alvo é o X positivo (+0.85)
-} else {
-    // Sou do Time Vermelho. Meu alvo é o X negativo (-0.85)
-}
-```
 
----
 
-## 🖥️ Monitoramento via Terminal
 
-O terminal exibe o estado do jogo a 10Hz no formato:
-`[METROS] Bola:(X, Y) | Azul: (P0_X, P0_Y) (P1_X, P1_Y) (P2_X, P2_Y)`
 
----
 
-## 🛠️ Regras Físicas
-1.  **Duração:** As partidas duram 5 minutos (300 segundos).
-2.  **Velocidade:** Robôs atingem até `0.5 m/s`.
-3.  **Colisões:** Robôs colidem entre si, com a bola e com as paredes. 
-4.  **Gols:** Devem ser feitos empurrando a bola fisicamente. Não há comando de chute.
-5.  **Comandos de Teclado:**
-    -   **Tecla `F`:** Marca falta. Reseta as posições de todos os jogadores para as posições iniciais de jogo, mas **não** reseta a posição da bola nem o tempo/placar.
-    -   **Tecla `R`:** Reinicia o jogo completo. Reseta as posições dos jogadores, a posição da bola no centro, o placar e o cronômetro.
 
----
 
-## 📤 Entrega e Avaliação
 
-Ao finalizar o desafio, você deve entregar um **repositório (GitHub/GitLab)** contendo:
-1.  O código fonte da sua solução (pasta `solucao/`).
-2.  Um documento explicativo (pode ser um `README_SOLUCAO.md` ou um `PDF`).
 
-### 📝 O que deve conter no documento/apresentação:
-- **Explicação da Lógica:** Detalhamento do seu **Tomador de Decisão** e Planejador.
-- **Justificativa das Escolhas:** Por que você escolheu essa arquitetura? (Ex: Por que usar uma Behavior Tree em vez de uma Máquina de Estados? Ou, caso tenha feito via lógica linear no código, por que essa escolha foi suficiente?).
-- **Coordenação:** Como você lidou com a matemática e a cooperação entre os 3 robôs.
-- **Apresentação:**: No dia combinado, você terá até 20 minutos para aprresentar sua solução e mais 5 para questionamentos da equipe. 
 
-### 📊 Critérios de Avaliação:
-- **Robustez:** Como os robôs reagem a diferentes situações.
-- **Organização:** Código limpo e modularizado.
-- **Matemática:** Uso de vetores, trigonometria e física.
-- **Planejamento de Rota:** Eficiência na movimentação.
-- **Apresentação:** Você deverá explicar sua solução para a equipe.
 
-> **⚠️ Regra sobre IA:** O uso de IA não é proibido para auxílio, mas a solução **não deve ser feita inteiramente por IA**. Você deve ser capaz de explicar cada parte da lógica. O uso excessivo sem compreensão resultará em eliminação.
 
-Boa sorte! ⚽🤖🚀
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
