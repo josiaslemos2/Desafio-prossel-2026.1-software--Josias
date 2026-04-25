@@ -106,12 +106,26 @@ Action Estrategia::think(const GameState& state) {
     
     
     if (role == "Ala") {
-        if (teamA)
+        if (teamA) {
             alvoX = std::clamp(bola.x - 0.20f, -0.70f, -0.40f);
-        else
-            alvoX = std::clamp(bola.x + 0.20f, 0.40f, 0.70f);
+            alvoY = std::clamp(bola.y, -0.50f, 0.50f);
+            if (eu.distTo(alvoX, alvoY) < 0.02f) {
 
-        alvoY = std::clamp(bola.y, -0.50f, 0.50f);
+                float angulo = eu.angleTo(alvoX, alvoY);
+                a.moveDirectionX = std::cos(angulo);
+                a.moveDirectionY = std::sin(angulo);
+            }
+        }
+        else {
+            alvoX = std::clamp(bola.x + 0.20f, 0.40f, 0.70f);
+            alvoY = std::clamp(bola.y, -0.50f, 0.50f);
+            if (eu.distTo(alvoX, alvoY) < 0.02f) {
+
+                float angulo = eu.angleTo(alvoX, alvoY);
+                a.moveDirectionX = std::cos(angulo);
+                a.moveDirectionY = std::sin(angulo);
+            }
+         }
     }
 
     //evit tremor
