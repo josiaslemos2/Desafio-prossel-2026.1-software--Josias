@@ -49,11 +49,12 @@ Action Estrategia::think(const GameState& state) {
         float alvoX = std::clamp(bola.x, std::min(minX, maxX), std::max(minX, maxX));
         float alvoY = std::clamp(bola.y, -0.20f, 0.20f);
 
-        if (eu.distTo(alvoX, alvoY) < 0.02f) return a;
+        if (eu.distTo(alvoX, alvoY) < 0.02f) {
 
-        float angulo = eu.angleTo(alvoX, alvoY);
-        a.moveDirectionX = std::cos(angulo);
-        a.moveDirectionY = std::sin(angulo);
+            float angulo = eu.angleTo(alvoX, alvoY);
+            a.moveDirectionX = std::cos(angulo);
+            a.moveDirectionY = std::sin(angulo);
+        }
         return a;
     }
 
