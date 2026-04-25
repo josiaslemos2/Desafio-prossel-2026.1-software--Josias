@@ -57,9 +57,6 @@ Action Estrategia::think(const GameState& state) {
         return a;
     }
 
-    // =============================
-    // PRIORIDADE DA BOLA
-    // =============================
     
     float minhaDistbola = eu.distTo(bola.x, bola.y);
 
@@ -131,7 +128,7 @@ Action Estrategia::think(const GameState& state) {
     finalY += repulsaoY * fatorRepulsao;
 
     // empurrão lateral (quebra simetria)
-    float empurrao = (id % 2 == 0) ? 0.1f : -0.1f;
+    float empurrao = teamA ?  0.1f : -0.1f;
     finalY += empurrao;
 
     float vetorresultante = std::sqrt(finalX * finalX + finalY * finalY);
